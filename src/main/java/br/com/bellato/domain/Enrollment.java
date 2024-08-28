@@ -1,6 +1,6 @@
 package br.com.bellato.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
