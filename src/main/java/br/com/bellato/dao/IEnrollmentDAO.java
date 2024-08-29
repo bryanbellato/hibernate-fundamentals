@@ -11,4 +11,6 @@ public interface IEnrollmentDAO {
     List<Enrollment> search();
 
     Enrollment remove(Enrollment erl);
+
+    Enrollment update(Enrollment erl);
 }

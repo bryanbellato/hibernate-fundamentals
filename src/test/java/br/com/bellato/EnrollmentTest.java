@@ -5,7 +5,9 @@ import java.util.List;
 
 import br.com.bellato.dao.EnrollmentDAO;
 import br.com.bellato.dao.IEnrollmentDAO;
+import br.com.bellato.domain.Course;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +27,7 @@ public class EnrollmentTest {
     @Test
     public void register() {
         Enrollment erl = new Enrollment();
-        erl.setCode("A98");
+        erl.setCode("A71");
         erl.setDateEnrollment(Instant.now());
         erl.setStatus("ACTIVE");
         erl.setValue(2000d);
@@ -44,7 +46,7 @@ public class EnrollmentTest {
     public void remove() {
 
         Enrollment erl = new Enrollment();
-        erl.setCode("F2");
+        erl.setCode("F62");
         erl.setDateEnrollment(Instant.now());
         erl.setStatus("ACTIVE");
         erl.setValue(3000d);
@@ -58,6 +60,24 @@ public class EnrollmentTest {
         for (Enrollment e : enrollments) {
             assertNotEquals(erl.getId(), e.getId());
         }
+
+    }
+
+    @Test
+    public void update() {
+        Enrollment erl = new Enrollment();
+        erl.setCode("X44");
+        erl.setDateEnrollment(Instant.now());
+        erl.setStatus("ACTIVE");
+        erl.setValue(9999d);
+        erl = enrollmentDAO.register(erl);
+        assertNotNull(erl);
+        assertNotNull(erl.getId());
+
+        erl.setStatus("UNACTIVE");
+        erl = enrollmentDAO.update(erl);
+
+        Assert.assertEquals("UNACTIVE", erl.getStatus());
 
     }
 

@@ -56,9 +56,32 @@ public class CourseDAO implements ICourseDAO {
             entityManager.remove(course_remove);
         }
         entityManager.getTransaction().commit();
-        entityManager.close();
 
         return course;
+    }
+
+    public Course update(Course course) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        Course course_update = entityManager.find(Course.class, course.getId());
+
+        if (course_update != null) {
+            course_update.setName(course.getName());
+            course_update.setCode(course.getCode());
+            course_update.setDescription(course.getDescription());
+
+            System.out.println("The following course will be updated in the system:");
+            System.out.println("Course ID :: " + course_update.getId());
+            System.out.println("Updated Course Name :: " + course_update.getName());
+            System.out.println("Updated Course Description :: " + course_update.getDescription());
+
+        }
+
+        entityManager.getTransaction().commit();
+
+
+        return course_update;
     }
 
 }

@@ -1,5 +1,6 @@
 package br.com.bellato.dao;
 
+import br.com.bellato.domain.Course;
 import br.com.bellato.domain.Enrollment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -57,9 +58,35 @@ public class EnrollmentDAO implements IEnrollmentDAO {
             entityManager.remove(enrollment);
         }
         entityManager.getTransaction().commit();
-        entityManager.close();
 
         return erl;
+    }
+
+    public Enrollment update(Enrollment erl) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        Enrollment enrollment = entityManager.find(Enrollment.class, erl.getId());
+
+        if (enrollment != null) {
+            enrollment.setCode(erl.getCode());
+            enrollment.setDateEnrollment(erl.getDateEnrollment());
+            enrollment.setValue(erl.getValue());
+            enrollment.setStatus(erl.getStatus());
+
+            System.out.println("The following Enrollment will be updated in the system:");
+            System.out.println("Enrollment ID :: " + enrollment.getId());
+            System.out.println("Enrollment Code :: " + enrollment.getCode());
+            System.out.println("Enrollment Date :: " + enrollment.getDateEnrollment());
+            System.out.println("Enrollment Value :: " + enrollment.getValue());
+            System.out.println("Enrollment Status :: " + enrollment.getStatus());
+
+        }
+
+        entityManager.getTransaction().commit();
+
+
+        return enrollment;
     }
 
 }

@@ -10,4 +10,5 @@ public interface ICourseDAO {
     public Course register(Course course);
     List<Course> search();
     Course remove(Course course);
+    Course update(Course course);
 }
