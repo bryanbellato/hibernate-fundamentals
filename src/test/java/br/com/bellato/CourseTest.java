@@ -6,8 +6,10 @@ import br.com.bellato.domain.Course;
 import br.com.bellato.domain.Enrollment;
 import org.junit.Test;
 
+import java.time.Instant;
 import java.util.List;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class CourseTest {
@@ -21,7 +23,7 @@ public class CourseTest {
     @Test
     public void register() {
         Course course = new Course();
-        course.setCode("A3");
+        course.setCode("A6");
         course.setDescription("COURSE TEST");
         course.setName("Just a test.");
         course = courseDAO.register(course);
@@ -34,6 +36,25 @@ public class CourseTest {
     public void search() {
         List<Course> courses = courseDAO.search();
         assertNotNull(courses);
+    }
+
+    @Test
+    public void remove() {
+
+        Course course = new Course();
+        course.setCode("B2");
+        course.setDescription("COURSE TEST (REMOVAL)");
+        course.setName("Just a test for removing.");
+        course = courseDAO.register(course);
+        assertNotNull(course);
+        assertNotNull(course.getId());
+
+        courseDAO.remove(course);
+
+        List<Course> courses = courseDAO.search();
+        for (Course e : courses) {
+            assertNotEquals(course.getId(), e.getId());
+        }
     }
 
 }

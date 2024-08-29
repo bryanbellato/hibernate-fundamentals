@@ -11,40 +11,54 @@ import java.util.List;
 
 public class CourseDAO implements ICourseDAO {
 
+    private EntityManagerFactory entityManagerFactory;
+
+    public CourseDAO() {
+        entityManagerFactory = Persistence.createEntityManagerFactory("ExampleJPA");
+    }
+
     @Override
     public Course register(Course course) {
-        EntityManagerFactory entityManagerFactory =
-                Persistence.createEntityManagerFactory("ExampleJPA");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         entityManager.getTransaction().begin();
         entityManager.persist(course);
         entityManager.getTransaction().commit();
 
-        entityManager.close();
-        entityManagerFactory.close();
-
         return course;
     }
 
     public List<Course> search() {
-        EntityManagerFactory entityManagerFactory =
-                Persistence.createEntityManagerFactory("ExampleJPA");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         TypedQuery<Course> query = entityManager.createQuery("SELECT e FROM Course e", Course.class);
         List<Course> courses = query.getResultList();
 
         for (Course course : courses) {
-            System.out.println("ID: " + course.getId() +
+            System.out.println("ID: " + course.getId() + ", Course Code: " + course.getCode() +
                     ", Course Name: " + course.getName() +
                     ", Course Description: " + course.getDescription());
         }
 
-        entityManager.close();
-        entityManagerFactory.close();
-
         return courses;
+    }
+
+    public Course remove(Course course) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        Course course_remove = entityManager.find(Course.class, course.getId());
+        if (course_remove != null) {
+            System.out.println("The following course will be removed from the system.");
+            System.out.println("Course ID :: " + course_remove.getId());
+            System.out.println("Course Name :: " + course_remove.getName());
+            System.out.println("Course Description :: " + course_remove.getDescription());
+            entityManager.remove(course_remove);
+        }
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+        return course;
     }
 
 }
