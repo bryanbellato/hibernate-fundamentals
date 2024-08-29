@@ -1,6 +1,5 @@
 package br.com.bellato.dao;
 
-import br.com.bellato.domain.Course;
 import br.com.bellato.domain.Enrollment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -9,42 +8,41 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class CourseDAO implements ICourseDAO {
+public class EnrollmentDAO implements IEnrollmentDAO {
 
     @Override
-    public Course register(Course course) {
+    public Enrollment register(Enrollment erl) {
         EntityManagerFactory entityManagerFactory =
                 Persistence.createEntityManagerFactory("ExampleJPA");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         entityManager.getTransaction().begin();
-        entityManager.persist(course);
+        entityManager.persist(erl);
         entityManager.getTransaction().commit();
 
         entityManager.close();
         entityManagerFactory.close();
 
-        return course;
+        return erl;
     }
 
-    public List<Course> search() {
+    public List<Enrollment> search() {
         EntityManagerFactory entityManagerFactory =
                 Persistence.createEntityManagerFactory("ExampleJPA");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        TypedQuery<Course> query = entityManager.createQuery("SELECT e FROM Course e", Course.class);
-        List<Course> courses = query.getResultList();
+        TypedQuery<Enrollment> query = entityManager.createQuery("SELECT e FROM Enrollment e", Enrollment.class);
+        List<Enrollment> enrollments = query.getResultList();
 
-        for (Course course : courses) {
-            System.out.println("ID: " + course.getId() +
-                    ", Course Name: " + course.getName() +
-                    ", Course Description: " + course.getDescription());
+        for (Enrollment enrollment : enrollments) {
+            System.out.println("ID: " + enrollment.getId() +
+                    ", Enrollment Date: " + enrollment.getDateEnrollment() +
+                    ", Enrollment Status: " + enrollment.getStatus());
         }
 
         entityManager.close();
         entityManagerFactory.close();
 
-        return courses;
+        return enrollments;
     }
-
 }
